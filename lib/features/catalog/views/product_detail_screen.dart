@@ -9,6 +9,7 @@ import '../../../core/utils/price_formatter.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../cart/views/widgets/added_to_cart_sheet.dart';
 import '../../cart/views/widgets/cart_badge_icon.dart';
+import '../../favorites/views/widgets/favorite_button.dart';
 import '../models/product_model.dart';
 import '../providers/catalog_provider.dart';
 import 'widgets/product_image.dart';
@@ -156,21 +157,30 @@ class _ImageGalleryState extends State<_ImageGallery> {
 
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(AppRadius.large),
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: images.length,
-              itemBuilder: (_, index) {
-                final image = ProductImage(url: images[index], padding: 24);
-                return index == 0
-                    ? Hero(tag: 'product-image-${product.id}', child: image)
-                    : image;
-              },
+        Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.large),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: PageView.builder(
+                  controller: _controller,
+                  itemCount: images.length,
+                  itemBuilder: (_, index) {
+                    final image = ProductImage(url: images[index], padding: 24);
+                    return index == 0
+                        ? Hero(tag: 'product-image-${product.id}', child: image)
+                        : image;
+                  },
+                ),
+              ),
             ),
-          ),
+            Positioned(
+              top: AppSpacing.md,
+              right: AppSpacing.md,
+              child: FavoriteButton(productId: product.id, size: 40),
+            ),
+          ],
         ),
         if (images.length > 1) ...[
           const SizedBox(height: AppSpacing.md),

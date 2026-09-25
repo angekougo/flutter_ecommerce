@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/price_formatter.dart';
+import '../../../favorites/views/widgets/favorite_button.dart';
 import '../../models/product_model.dart';
 import 'product_image.dart';
 import 'rating_label.dart';
@@ -26,12 +27,23 @@ class ProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppRadius.small),
-                  child: Hero(
-                    tag: 'product-image-${product.id}',
-                    child: SizedBox.expand(child: ProductImage(url: product.imageUrl)),
-                  ),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(AppRadius.small),
+                        child: Hero(
+                          tag: 'product-image-${product.id}',
+                          child: ProductImage(url: product.imageUrl),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: AppSpacing.xs,
+                      right: AppSpacing.xs,
+                      child: FavoriteButton(productId: product.id, size: 28),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),

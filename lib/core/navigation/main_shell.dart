@@ -4,10 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/cart/views/cart_screen.dart';
 import '../../features/cart/views/widgets/cart_badge_icon.dart';
 import '../../features/catalog/views/product_list_screen.dart';
+import '../../features/favorites/views/favorites_screen.dart';
 import 'navigation_provider.dart';
 
 class MainShell extends ConsumerWidget {
   const MainShell({super.key});
+
+  // Même ordre que l'enum AppTab.
+  static const _screens = [
+    ProductListScreen(),
+    FavoritesScreen(),
+    CartScreen(),
+    Center(child: Text('Profil')), // Branché à l'étape 5.
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,12 +27,12 @@ class MainShell extends ConsumerWidget {
       // et la recherche en revenant sur l'accueil.
       body: IndexedStack(
         index: tab.index,
-        children: const [
-          ProductListScreen(),
-          // Branchés aux étapes 4 et 5.
-          Center(child: Text('Favoris')),
-          CartScreen(),
-          Center(child: Text('Profil')),
+        children: [
+          for (final (index, screen) in _screens.indexed)
+            // Accueil et Favoris affichent les mêmes produits avec les mêmes
+            // tags Hero : on désactive ceux des onglets cachés pour éviter
+            // le conflit à l'ouverture d'un détail.
+            HeroMode(enabled: index == tab.index, child: screen),
         ],
       ),
       bottomNavigationBar: NavigationBar(
