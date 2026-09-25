@@ -5,6 +5,7 @@ import '../../features/cart/views/cart_screen.dart';
 import '../../features/cart/views/widgets/cart_badge_icon.dart';
 import '../../features/catalog/views/product_list_screen.dart';
 import '../../features/favorites/views/favorites_screen.dart';
+import '../../features/profile/views/profile_screen.dart';
 import 'navigation_provider.dart';
 
 class MainShell extends ConsumerWidget {
@@ -15,7 +16,7 @@ class MainShell extends ConsumerWidget {
     ProductListScreen(),
     FavoritesScreen(),
     CartScreen(),
-    Center(child: Text('Profil')), // Branché à l'étape 5.
+    ProfileScreen(),
   ];
 
   @override

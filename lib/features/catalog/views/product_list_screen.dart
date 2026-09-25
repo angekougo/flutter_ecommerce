@@ -7,6 +7,7 @@ import '../../../core/shared_widgets/error_view.dart';
 import '../../../core/shared_widgets/skeleton.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../cart/views/widgets/cart_badge_icon.dart';
+import '../../profile/providers/profile_provider.dart';
 import '../providers/catalog_provider.dart';
 import '../providers/filter_provider.dart';
 import 'product_detail_screen.dart';
@@ -32,7 +33,7 @@ class ProductListScreen extends ConsumerWidget {
                 children: [
                   const _Header(),
                   const SizedBox(height: AppSpacing.xl),
-                  Text('Bonjour 👋', style: textTheme.headlineMedium),
+                  const _Greeting(),
                   const SizedBox(height: AppSpacing.xs),
                   Text('Trouvez ce qui vous plaît.', style: textTheme.bodySmall),
                   const SizedBox(height: AppSpacing.lg),
@@ -138,6 +139,22 @@ class _Header extends ConsumerWidget {
           icon: const CartBadgeIcon(),
         ),
       ],
+    );
+  }
+}
+
+/// "Bonjour, Ange 👋" : le prénom vient du profil. Pendant le chargement
+/// (ou en cas d'erreur) on affiche simplement "Bonjour".
+class _Greeting extends ConsumerWidget {
+  const _Greeting();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final firstName = ref.watch(userProfileProvider.select((p) => p.value?.firstName));
+
+    return Text(
+      firstName == null ? 'Bonjour 👋' : 'Bonjour, $firstName 👋',
+      style: Theme.of(context).textTheme.headlineMedium,
     );
   }
 }
